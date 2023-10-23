@@ -3,6 +3,8 @@ package sample.cafekiosk.unit;
 import java.util.ArrayList;
 import java.util.List;
 
+import sample.cafekiosk.unit.beverage.Beverage;
+
 public class CafeKiosk {
 
 	private final List<Beverage> beverages = new ArrayList<>();
