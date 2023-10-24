@@ -1,9 +1,11 @@
 package sample.cafekiosk.unit;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import sample.cafekiosk.unit.beverage.Beverage;
+import sample.cafekiosk.unit.order.Order;
 
 public class CafeKiosk {
 
@@ -24,5 +26,9 @@ public class CafeKiosk {
 			totalPrice += beverage.getPrice();
 		}
 		return totalPrice;
+	}
+
+	public Order createOrder(){
+		return new Order(LocalDateTime.now(), beverages);
 	}
 }
