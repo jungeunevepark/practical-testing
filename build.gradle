@@ -33,7 +33,7 @@ dependencies {
 	// h2
 	runtimeOnly 'com.h2database:h2'
 
-	// test
+	// test (@Test + AssertJ + JUnit5)
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
