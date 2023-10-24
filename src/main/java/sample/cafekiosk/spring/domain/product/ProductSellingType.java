@@ -1,5 +1,7 @@
 package sample.cafekiosk.spring.domain.product;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -9,4 +11,8 @@ public enum ProductSellingType {
 	SOLDOUT("품절");
 
 	private final String text;
+
+	public static List<ProductSellingType> forDisplay() {
+		return List.of(SELLING, HOLD);
+	}
 }
