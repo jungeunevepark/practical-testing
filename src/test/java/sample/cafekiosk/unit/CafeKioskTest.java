@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import sample.cafekiosk.unit.beverage.Americano;
+import sample.cafekiosk.unit.beverage.Latte;
 
 public class CafeKioskTest {
 	@Test
@@ -35,6 +36,20 @@ public class CafeKioskTest {
 		assertThat(cafeKiosk.getBeverages()).hasSize(1);
 
 		cafeKiosk.remove(americano);
+		assertThat(cafeKiosk.getBeverages()).isEmpty();
+	}
+
+	@Test
+	void clear(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		Latte latte = new Latte();
+
+		cafeKiosk.add(americano);
+		cafeKiosk.add(latte);
+		assertThat(cafeKiosk.getBeverages()).hasSize(2);
+
+		cafeKiosk.clear();
 		assertThat(cafeKiosk.getBeverages()).isEmpty();
 	}
 }
