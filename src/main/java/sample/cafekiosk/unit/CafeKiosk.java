@@ -46,8 +46,7 @@ public class CafeKiosk {
 		return totalPrice;
 	}
 
-	public Order createOrder() {
-		LocalDateTime currentDateTime = LocalDateTime.now();
+	public Order createOrder(LocalDateTime currentDateTime) {
 		LocalTime currentTime = currentDateTime.toLocalTime();
 
 		if (currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_CLOSE_TIME)) {
