@@ -3,9 +3,12 @@ package sample.cafekiosk.spring.api.service.order.response;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import lombok.Builder;
 import lombok.Getter;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
+import sample.cafekiosk.spring.domain.order.Order;
 
 @Getter
 public class OrderResponse {
@@ -14,4 +17,26 @@ public class OrderResponse {
 	private int totalPrice;
 	private LocalDateTime registeredDateTime;
 	private List<ProductResponse> orderProducts = new ArrayList<>();
+
+	@Builder
+	private OrderResponse(Long id, int totalPrice, LocalDateTime registeredDateTime,
+		List<ProductResponse> orderProducts) {
+		this.id = id;
+		this.totalPrice = totalPrice;
+		this.registeredDateTime = registeredDateTime;
+		this.orderProducts = orderProducts;
+	}
+
+	public static OrderResponse from(Order order) {
+		return OrderResponse.builder()
+			.id(order.getId())
+			.totalPrice(order.getTotalPrice())
+			.registeredDateTime(order.getRegisteredDateTime())
+			.orderProducts(
+				order.getOrderProducts().stream()
+					.map(orderProduct -> ProductResponse.from(orderProduct.getProduct()))
+					.collect(Collectors.toList())
+			)
+			.build();
+	}
 }
