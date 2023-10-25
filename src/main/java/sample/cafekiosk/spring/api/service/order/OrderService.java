@@ -26,16 +26,20 @@ public class OrderService {
 
 	public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredTime) {
 		List<String> productNumbers = request.getProductNumbers();
-		List<Product> products = productRepository.findAllByProductNumberIn(productNumbers);
-		Map<String, Product> productMap = products.stream()
-			.collect(Collectors.toMap(Product::getProductNumber, p -> p));
-
-		List<Product> duplicateProducts = productNumbers.stream()
-			.map(productMap::get)
-			.collect(Collectors.toList());
+		List<Product> duplicateProducts = findByProductsBy(productNumbers);
 
 		Order order = Order.create(duplicateProducts, registeredTime);
 		Order save = orderRepository.save(order);
 		return OrderResponse.from(save);
+	}
+
+	private List<Product> findByProductsBy(List<String> productNumbers) {
+		List<Product> products = productRepository.findAllByProductNumberIn(productNumbers);
+		Map<String, Product> productMap = products.stream()
+			.collect(Collectors.toMap(Product::getProductNumber, p -> p));
+
+		return productNumbers.stream()
+			.map(productMap::get)
+			.collect(Collectors.toList());
 	}
 }
