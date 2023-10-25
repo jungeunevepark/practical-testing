@@ -2,6 +2,8 @@ package sample.cafekiosk.spring.api.service.order;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +26,16 @@ public class OrderService {
 
 	public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredTime) {
 		List<String> productNumbers = request.getProductNumbers();
-		// product
 		List<Product> products = productRepository.findAllByProductNumberIn(productNumbers);
+		Map<String, Product> productMap = products.stream()
+			.collect(Collectors.toMap(Product::getProductNumber, p -> p));
 
-		Order order = Order.create(products, registeredTime);
+		List<Product> duplicateProducts = productNumbers.stream()
+			.map(productMap::get)
+			.collect(Collectors.toList());
+
+		Order order = Order.create(duplicateProducts, registeredTime);
 		Order save = orderRepository.save(order);
-
 		return OrderResponse.from(save);
 	}
 }
