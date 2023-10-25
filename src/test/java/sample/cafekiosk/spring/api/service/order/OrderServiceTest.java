@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
@@ -17,6 +18,7 @@ import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductType;
 
 // @DataJpaTest
+@ActiveProfiles("test")
 @SpringBootTest
 class OrderServiceTest {
 	@Autowired
@@ -28,6 +30,7 @@ class OrderServiceTest {
 	@Test
 	void createOrder() {
 		// given
+		LocalDateTime registeredDateTime = LocalDateTime.now();
 		Product product1 = createProduct(ProductType.HANDMADE, "001", 1000);
 		Product product2 = createProduct(ProductType.HANDMADE, "002", 3000);
 		Product product3 = createProduct(ProductType.HANDMADE, "003", 5000);
@@ -38,13 +41,14 @@ class OrderServiceTest {
 			.build();
 
 		// when
-		OrderResponse response = orderService.createOrder(request, LocalDateTime.now());
+		OrderResponse response = orderService.createOrder(request, registeredDateTime);
 
 		// then
 		assertThat(response.getId()).isNotNull();
 		assertThat(response)
 			.extracting("registeredDateTime", "totalPrice")
-			.contains(LocalDateTime.now(), 4000);
+			.contains(registeredDateTime, 4000);
+
 		assertThat(response.getOrderProducts()).hasSize(2)
 			.extracting("productNumber", "price")
 			.containsExactlyInAnyOrder(
