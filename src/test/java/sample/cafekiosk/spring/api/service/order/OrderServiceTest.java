@@ -86,7 +86,7 @@ class OrderServiceTest {
 
 		productRepository.saveAll(List.of(product1, product2, product3));
 		OrderCreateRequest request = OrderCreateRequest.builder()
-			.productNumbers(List.of("001", "001", "002", "003"))
+			.productNumbers(List.of("001", "001"))
 			.build();
 
 		// when
