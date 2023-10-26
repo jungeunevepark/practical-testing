@@ -16,4 +16,15 @@ class ProductTypeTest {
 		// then
 		assertThat(result).isFalse();
 	}
+
+	@DisplayName("상품 타입이 재고 관련 타입인지를 체크한다.")
+	@Test
+	void containsStockType2() {
+		// given
+		ProductType givenType = ProductType.BAKERY;
+		// when
+		boolean result = ProductType.containsStockType(givenType);
+		// then
+		assertThat(result).isTrue();
+	}
 }
