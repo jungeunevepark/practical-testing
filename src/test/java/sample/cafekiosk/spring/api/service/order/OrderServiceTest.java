@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
@@ -22,10 +22,8 @@ import sample.cafekiosk.spring.domain.product.ProductType;
 import sample.cafekiosk.spring.domain.stock.Stock;
 import sample.cafekiosk.spring.domain.stock.StockRepository;
 
-// @DataJpaTest
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
 class OrderServiceTest {
 	@Autowired
 	private OrderService orderService;
@@ -38,13 +36,13 @@ class OrderServiceTest {
 	@Autowired
 	private StockRepository stockRepository;
 
-	// @AfterEach
-	// void tearDown() {
-	// 	// productRepository.deleteAll();
-	// 	orderProductRepository.deleteAllInBatch();
-	// 	productRepository.deleteAllInBatch();
-	// 	orderRepository.deleteAllInBatch();
-	// }
+	@AfterEach
+	void tearDown() {
+		orderProductRepository.deleteAllInBatch();
+		productRepository.deleteAllInBatch();
+		orderRepository.deleteAllInBatch();
+		stockRepository.deleteAllInBatch();
+	}
 
 	@DisplayName("주문번호 리스트를 받아 주문을 생성한다.")
 	@Test
