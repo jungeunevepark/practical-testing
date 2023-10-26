@@ -1,6 +1,9 @@
 package sample.cafekiosk.spring.api.service.product;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,6 +54,14 @@ class ProductServiceTest {
 		Assertions.assertThat(product)
 			.extracting("productNumber", "type", "sellingType", "name", "price")
 			.contains("002", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000);
+
+		List<Product> products = productRepository.findAll();
+		Assertions.assertThat(products).hasSize(2)
+			.extracting("productNumber", "type", "sellingType", "name", "price")
+			.contains(
+				Tuple.tuple("001", ProductType.HANDMADE, ProductSellingType.SELLING, "아메리카노", 4000),
+				Tuple.tuple("002", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000)
+			);
 	}
 
 	@DisplayName("신규 상품이 하나도 없는 경우 신규 상품을 등록하면 상품 번호는 001이다.")
@@ -71,6 +82,12 @@ class ProductServiceTest {
 		Assertions.assertThat(product)
 			.extracting("productNumber", "type", "sellingType", "name", "price")
 			.contains("001", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000);
+		List<Product> products = productRepository.findAll();
+		Assertions.assertThat(products).hasSize(1)
+			.extracting("productNumber", "type", "sellingType", "name", "price")
+			.contains(
+				Tuple.tuple("001", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000)
+			);
 	}
 
 	private Product createProduct(String productNumber, ProductType type, ProductSellingType sellingType,
