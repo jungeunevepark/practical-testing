@@ -45,6 +45,26 @@ class ProductServiceTest {
 			.contains("002", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000);
 	}
 
+	@DisplayName("신규 상품이 하나도 없는 경우 신규 상품을 등록하면 상품 번호는 001이다.")
+	@Test
+	void createProductWhenProductsIsEmpty() {
+		// given
+		ProductCreateRequest request = ProductCreateRequest.builder()
+			.type(ProductType.HANDMADE)
+			.sellingType(ProductSellingType.SELLING)
+			.name("카푸치노")
+			.price(5000)
+			.build();
+
+		// when
+		ProductResponse product = productService.createProduct(request);
+
+		// then
+		Assertions.assertThat(product)
+			.extracting("productNumber", "type", "sellingType", "name", "price")
+			.contains("001", ProductType.HANDMADE, ProductSellingType.SELLING, "카푸치노", 5000);
+	}
+
 	private Product createProduct(String productNumber, ProductType type, ProductSellingType sellingType,
 		String name, int price) {
 		return Product.builder()
