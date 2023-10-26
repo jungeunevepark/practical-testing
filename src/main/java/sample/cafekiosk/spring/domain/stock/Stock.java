@@ -7,10 +7,12 @@ import javax.persistence.Id;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sample.cafekiosk.spring.domain.BaseEntity;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stock extends BaseEntity {
 	@Id
@@ -30,5 +32,13 @@ public class Stock extends BaseEntity {
 			.productNumber(productNumber)
 			.quantity(quantity)
 			.build();
+	}
+
+	public boolean isQuantityLessThan(int quantity) {
+		return this.quantity < quantity;
+	}
+
+	public void deductQuantity(int quantity) {
+
 	}
 }
