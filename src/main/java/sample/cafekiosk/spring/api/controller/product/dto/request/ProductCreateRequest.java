@@ -7,7 +7,7 @@ import javax.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sample.cafekiosk.spring.domain.product.Product;
+import sample.cafekiosk.spring.api.service.product.request.ProductServiceRequest;
 import sample.cafekiosk.spring.domain.product.ProductSellingType;
 import sample.cafekiosk.spring.domain.product.ProductType;
 
@@ -35,9 +35,8 @@ public class ProductCreateRequest {
 		this.price = price;
 	}
 
-	public Product toEntity(String nextProductNumber) {
-		return Product.builder()
-			.productNumber(nextProductNumber)
+	public ProductServiceRequest toServiceRequest() {
+		return ProductServiceRequest.builder()
 			.type(type)
 			.sellingType(sellingType)
 			.name(name)

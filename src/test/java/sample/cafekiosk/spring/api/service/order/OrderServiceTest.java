@@ -59,7 +59,7 @@ class OrderServiceTest {
 			.build();
 
 		// when
-		OrderResponse response = orderService.createOrder(request, registeredDateTime);
+		OrderResponse response = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
 		// then
 		assertThat(response.getId()).isNotNull();
@@ -90,7 +90,7 @@ class OrderServiceTest {
 			.build();
 
 		// when
-		OrderResponse response = orderService.createOrder(request, registeredDateTime);
+		OrderResponse response = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
 		// then
 		assertThat(response.getId()).isNotNull();
@@ -125,7 +125,7 @@ class OrderServiceTest {
 			.build();
 
 		// when
-		OrderResponse orderResponse = orderService.createOrder(request, registeredTime);
+		OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredTime);
 
 		// then
 		assertThat(orderResponse.getId()).isNotNull();
@@ -169,7 +169,7 @@ class OrderServiceTest {
 			.build();
 
 		// when // then
-		assertThatThrownBy(() -> orderService.createOrder(request, registeredTime)).isInstanceOf(
+		assertThatThrownBy(() -> orderService.createOrder(request.toServiceRequest(), registeredTime)).isInstanceOf(
 			IllegalArgumentException.class).hasMessage("재고가 부족한 상품이 있습니다.");
 
 	}
