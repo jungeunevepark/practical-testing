@@ -64,16 +64,19 @@ class ProductControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isBadRequest());
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("상품 타입은 필수입니다."))
+			.andExpect(jsonPath("$.data").isEmpty());
 
 	}
 
-	@DisplayName("신규 상품을 등록한다.")
+	@DisplayName("신규 상품을 등록할 때, 상품 판매상태은 필수값이다.")
 	@Test
-	void createProduct1() throws Exception {
+	void createProductWithoutSellingType() throws Exception {
 		ProductCreateRequest request = ProductCreateRequest.builder()
 			.type(ProductType.HANDMADE)
-			.sellingType(ProductSellingType.SELLING)
 			.name("아메리카노")
 			.price(4000)
 			.build();
@@ -83,17 +86,20 @@ class ProductControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk());
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("상품 판매상태는 필수입니다."))
+			.andExpect(jsonPath("$.data").isEmpty());
 
 	}
 
-	@DisplayName("신규 상품을 등록한다.")
+	@DisplayName("신규 상품을 등록할 때, 상품 이름은 필수값이다.")
 	@Test
-	void createProduct2() throws Exception {
+	void createProductWithoutName() throws Exception {
 		ProductCreateRequest request = ProductCreateRequest.builder()
 			.type(ProductType.HANDMADE)
 			.sellingType(ProductSellingType.SELLING)
-			.name("아메리카노")
 			.price(4000)
 			.build();
 
@@ -102,18 +108,22 @@ class ProductControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk());
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("상품 이름은 필수입니다."))
+			.andExpect(jsonPath("$.data").isEmpty());
 
 	}
 
-	@DisplayName("신규 상품을 등록한다.")
+	@DisplayName("신규 상품을 등록할 때, 상품 가격은 양수값이다.")
 	@Test
-	void createProduct3() throws Exception {
+	void createProductWithoutZeroPrice() throws Exception {
 		ProductCreateRequest request = ProductCreateRequest.builder()
 			.type(ProductType.HANDMADE)
 			.sellingType(ProductSellingType.SELLING)
 			.name("아메리카노")
-			.price(4000)
+			.price(0)
 			.build();
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/product/new")
@@ -121,7 +131,11 @@ class ProductControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk());
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("상품 가격은 양수이어야 합니다."))
+			.andExpect(jsonPath("$.data").isEmpty());
 
 	}
 }
