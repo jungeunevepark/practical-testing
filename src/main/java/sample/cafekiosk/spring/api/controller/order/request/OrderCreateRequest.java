@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sample.cafekiosk.spring.api.service.order.request.OrderServiceRequest;
 
 @Getter
 @NoArgsConstructor
@@ -17,5 +18,11 @@ public class OrderCreateRequest {
 	@Builder
 	public OrderCreateRequest(List<String> productNumbers) {
 		this.productNumbers = productNumbers;
+	}
+
+	public OrderServiceRequest toServiceRequest() {
+		return OrderServiceRequest.builder()
+			.productNumbers(productNumbers)
+			.build();
 	}
 }
