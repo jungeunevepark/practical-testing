@@ -2,6 +2,9 @@ package sample.cafekiosk.spring.api;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.Getter;
+
+@Getter
 public class ApiResponse<T> {
 	private int code;
 	private HttpStatus status;
